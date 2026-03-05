@@ -1,12 +1,12 @@
-import { UseSuppliesContext } from '../../../../context/safety/kit/supplies/SuppliesContext';
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
 import Actions from '../../../../components/safety/kit/supplies/Actions';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Segment } from "@mui/icons-material";
 import { useMemo } from 'react';
+import { UseKitContext } from '../../../../context/safety/kit/KitContext';
 
 const Table = () => { 
-  const { supplies, isFetching } = UseSuppliesContext();
+  const { supplies, isFetchingSupplies } = UseKitContext();
 
   const columns = useMemo(
     () => [
@@ -17,7 +17,7 @@ const Table = () => {
       },
       {
         header: 'NOMBRE',
-        accessorKey: 'name',
+        accessorKey: 'label',
       },
       {
         header: 'PRESENTACION',
@@ -32,7 +32,7 @@ const Table = () => {
   );
    const table = useMaterialReactTable({
     columns,
-    data: supplies || [],
+    data: supplies,
     enableColumnActions: false,
     enableColumnDragging: false,
     enableColumnFilterModes: false,
@@ -55,7 +55,7 @@ const Table = () => {
       },
     },
     state: {
-      isLoading: isFetching,
+      isLoading: isFetchingSupplies,
     },
     muiSearchTextFieldProps: {
       size: "small",

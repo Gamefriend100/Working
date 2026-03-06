@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { useGetRequest } from "../../../../hooks/safety/kit";
 import { UseAppContext } from "../../../AppContext";
 
@@ -13,23 +13,24 @@ export const RequestProvider = ({ children }) => {
   const { data, isFetching } = useGetRequest(authUserToken).request;
 
   const [modalRequest, setModalRequest] = useState({ show: false });
-  const [requests, setRequests] = useState([]);
 
-  useEffect(() => {
-    if (data) {
-      setRequests(data);
-    }
-  }, [data]);
+  // 🔥 NUEVO ESTADO GLOBAL
+  const [selectedSupplies, setSelectedSupplies] = useState([]);
+
+  // 🔥 función para agregar insumo
+  const addSupply = (supplyId) => {
+    setSelectedSupplies(prev => [...prev, supplyId]);
+  };
 
   return (
     <RequestContext.Provider
       value={{
         data,
-        requests,
-        setRequests,
         isFetching,
         modalRequest,
         setModalRequest,
+        selectedSupplies,   // 👈 exportamos
+        addSupply           // 👈 exportamos
       }}
     >
       {children}
